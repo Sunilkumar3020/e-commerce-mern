@@ -4,9 +4,11 @@ import Login from "../pages/Login"
 import Register from "../pages/Register"
 import ProtectedRoute from "../components/ProtectedRoute"
 import AdminAddProduct from "../pages/AdminAddProduct"
+import Navbar from "../components/Navbar"
 const AppRoutes = () => {
     return (
         <BrowserRouter>
+            <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
