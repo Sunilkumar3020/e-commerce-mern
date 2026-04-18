@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 
 //Routes
 app.use('/api/v1/auth', authRoutes)
-app.use('/api/products', productRoutes)
+app.use('/api/v1/products', productRoutes)
 
 // Global Error handler (IMPORTANT)
 

@@ -18,11 +18,17 @@ export const addProduct = async (req, res) => {
         // upload image to cloudinary
         let uploadedImage;
         try {
+            console.log("ENV CHECK:");
+            console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
+            console.log("API_KEY:", process.env.API_KEY);
+            console.log("API_SECRET:", process.env.API_SECRET);
             uploadedImage = await cloudinary.uploader.upload(req.file.path, {
                 folder: "products"
             });
         } catch (error) {
-            return res.status(500).json({ message: "Image upload failed." })
+            console.error("Cloudinary Error:", error)
+
+            return res.status(500).json({ message: "Image upload failed.", error: error.message })
         }
 
         // Create product
@@ -51,6 +57,7 @@ export const addProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
     try {
         const products = await Product.find().sort({ createdAt: -1 })
+        res.status(200).json(products)
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -89,7 +96,7 @@ export const updateProduct = async (req, res) => {
             const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
                 folder: "products"
             });
-            product.image = updateProduct.secure_url;
+            product.image = uploadedImage.secure_url;
         }
         const updatedProduct = await product.save()
         res.status(200).json({
