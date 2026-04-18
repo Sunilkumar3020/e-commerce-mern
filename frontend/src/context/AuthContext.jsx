@@ -9,21 +9,33 @@ export const AuthProvider = ({ children }) => {
 
     //login
     const login = async (data) => {
-        const res = await API.post('/auth/login', data)
-        setUser(res.data);
+        try {
+            const res = await API.post('/auth/login', data)
+            setUser(res.data);
+        } catch (error) {
+            throw error
+        }
     }
 
     //Register 
     const register = async (data) => {
-        const res = await API.post('/auth/register', data);
-        setUser(res.data)
+        try {
+            const res = await API.post('/auth/register', data);
+            setUser(res.data)
+        } catch (error) {
+            throw error
+        }
     }
 
     // logout
 
     const logout = async () => {
-        await API.post('/auth/logout');
-        setUser(null)
+        try {
+            await API.post('/auth/logout');
+            setUser(null)
+        } catch (error) {
+            throw error
+        }
     }
 
     return (

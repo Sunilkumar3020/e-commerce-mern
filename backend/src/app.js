@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     // origin: process.env.CLIENT_URL,
-    origin: "http://localhost:5174/",
+    origin: "http://localhost:5174",
     credentials: true
 }));
 app.get('/', (req, res) => {
