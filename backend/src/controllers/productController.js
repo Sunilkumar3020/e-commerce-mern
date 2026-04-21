@@ -56,12 +56,90 @@ export const addProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find().sort({ createdAt: -1 })
+        // const queryObj = { ...req.query };
+
+        // const removeFields = ["sort", "page", "limit", "keyword"];
+
+
+        // removeFields.forEach((value) => delete queryObj[value]);
+
+
+        // let queryStr = JSON.stringify(queryObj);
+        // queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
+
+        // let query = Product.find(JSON.parse(queryStr))
+console.log("Req:", req.query)
+        const queryObj = { ...req.query };
+
+        const removeFields = ["page", "limit", "sort", "fields", "keyword"];
+        removeFields.forEach((el) => delete queryObj[el]);
+
+        let queryStr = JSON.stringify(queryObj);
+
+        queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
+
+        // console.log("queryStr", queryStr)
+
+        let query = Product.find(JSON.parse(queryStr));
+
+        const products = await query
+
+        // const queryObj = { ...req.query };
+
+        // const formattedQuery = {};
+
+        // for (let key in queryObj) {
+        //     if (key.includes("[")) {
+        //         const field = key.split("[")[0];            // price
+        //         const operator = key.match(/\[(.*?)\]/)[1]; // lte
+
+        //         if (!formattedQuery[field]) {
+        //             formattedQuery[field] = {};
+        //         }
+
+        //         formattedQuery[field][`$${operator}`] = Number(queryObj[key]);
+        //     } else {
+        //         formattedQuery[key] = queryObj[key];
+        //     }
+        // }
+
+        // console.log("FINAL QUERY:", formattedQuery);
+
+        // const products = await Product.find(formattedQuery);
+
         res.status(200).json(products)
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
+
+// export const getProducts = async (req, res) => {
+//     try {
+//         let queryObj = { ...req.query };
+
+//         const removeFields = ["page", "limit", "sort", "fields", "keyword"];
+//         removeFields.forEach(el => delete queryObj[el]);
+
+//         let queryStr = JSON.stringify(queryObj);
+
+//         queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, m => `$${m}`);
+
+//         let formattedQuery = JSON.parse(queryStr);
+
+//         // convert numbers
+//         if (formattedQuery.price) {
+//             Object.keys(formattedQuery.price).forEach(key => {
+//                 formattedQuery.price[key] = Number(formattedQuery.price[key]);
+//             });
+//         }
+
+//         const products = await Product.find(formattedQuery);
+
+//         res.status(200).json(products);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+//   };    
 
 // Get Single Product
 export const getProductById = async (req, res) => {

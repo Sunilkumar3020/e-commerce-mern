@@ -18,13 +18,13 @@ export const register = async (req, res) => {
         }
 
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10)
+        // const hashedPassword = await bcrypt.hash(password, 10)
 
         // create user
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password
         })
 
         // Generate cookie token
