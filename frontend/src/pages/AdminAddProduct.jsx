@@ -30,14 +30,18 @@ export default function AdminAndProduct() {
         alert("Product Add")
     }
     return (
-        <form onSubmit={handleFormSubmit}>
-            <input type="text" name="name" placeholder="Product Name" value={form.name} onChange={e => handleInputChange(e)} />
-            <input type="text" placeholder="Description" name="description" value={form.description} onChange={e => handleInputChange(e)} />
-            <input type="number" name="price" placeholder="Price" value={form.price} onChange={e => handleInputChange(e)} />
-            <input type="text" name="category" placeholder="Category" value={form.category} onChange={e => handleInputChange(e)} />
-            <input type="text" name="stock" placeholder="Stock" value={form.stock} onChange={e => handleInputChange(e)} />
-            <button>Add Product</button>
-        </form>
+        <div className=" max-w-2xl m-auto">
+            <h3 className="text-3xl mb-5 text-center uppercase">Product add page</h3>
+            <form onSubmit={handleFormSubmit}>
+                <div className="flex flex-col"> <input type="text" name="name" placeholder="Product Name" className="border border-gray-300 p-3 mb-3" value={form.name} onChange={e => handleInputChange(e)} />
+                    <input type="text" placeholder="Description" name="description" className="border border-gray-300 p-3 mb-3" value={form.description} onChange={e => handleInputChange(e)} />
+                    <input type="number" name="price" placeholder="Price" className="border border-gray-300 p-3 mb-3" value={form.price} onChange={e => handleInputChange(e)} />
+                    <input type="text" name="category" placeholder="Category" className="border border-gray-300 p-3 mb-3" value={form.category} onChange={e => handleInputChange(e)} />
+                    <input type="text" name="stock" placeholder="Stock" className="border border-gray-300 p-3 mb-3" value={form.stock} onChange={e => handleInputChange(e)} />
+                    <input type="file" name="image" className="border border-gray-300 p-3 mb-3" onChange={e => handleInputChange(e)} />
+                    <button className="bg-green-600 p-3 text-xl text-white cursor-pointer hover:bg-green-800">Add Product</button></div>
+            </form>
+        </div>
 
     )
 }

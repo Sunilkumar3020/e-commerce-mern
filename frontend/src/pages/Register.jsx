@@ -29,13 +29,16 @@ export default function Register() {
     }
 
     return (
-        <form onSubmit={handleFormSubmit}>
-            <input type="text" name="name" placeholder="Name" value={form.name} onChange={e => handleInputChange(e)} />
-            <input type="email" name="email" placeholder="Email" value={form.email} onChange={e => handleInputChange(e)} />
-            <input type="password" name="password" placeholder="Password" value={form.password} onChange={e => handleInputChange(e)} />
+        <div className="  max-w-2xl m-auto">
+            <h3 className="text-3xl mb-5 text-center uppercase">Register Now</h3>
+            <form onSubmit={handleFormSubmit}>
+                <div className="flex flex-col ">
+                    <input type="text" name="name" className="border border-gray-300 p-3 mb-3" placeholder="Name" value={form.name} onChange={e => handleInputChange(e)} />
+                    <input type="email" name="email" className="border border-gray-300 p-3 mb-3" placeholder="Email" value={form.email} onChange={e => handleInputChange(e)} />
+                    <input type="password" name="password" className="border border-gray-300 p-3 mb-3" placeholder="Password" value={form.password} onChange={e => handleInputChange(e)} />
 
-            <button>Register Now</button>
-        </form>
+                    <button className="bg-green-600 p-3 text-xl text-white cursor-pointer hover:bg-green-800">Register Now</button></div>
+            </form></div>
 
     )
 }
