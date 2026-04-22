@@ -3,10 +3,11 @@ import { addProduct, getProducts, getProductById, updateProduct, deleteProduct }
 import { protect } from "../middleware/authMiddleware.js";
 import { adminOnly } from "../middleware/adminMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js"
+import customMiddleware from "../middleware/customMiddleware.js";
 
 const router = express.Router();
 //Public routes
-router.get('/', getProducts)
+router.get('/', customMiddleware, getProducts)
 router.get('/:id', getProductById);
 
 //Admin routes

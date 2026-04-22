@@ -68,7 +68,7 @@ export const getProducts = async (req, res) => {
         // queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
 
         // let query = Product.find(JSON.parse(queryStr))
-console.log("Req:", req.query)
+        console.log("IP", req.ip)
         const queryObj = { ...req.query };
 
         const removeFields = ["page", "limit", "sort", "fields", "keyword"];
@@ -81,6 +81,9 @@ console.log("Req:", req.query)
         // console.log("queryStr", queryStr)
 
         let query = Product.find(JSON.parse(queryStr));
+        if (req.query.sort) {
+            query = query.sort(req.query.sort)
+        }
 
         const products = await query
 
