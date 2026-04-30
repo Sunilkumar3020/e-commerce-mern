@@ -1,7 +1,9 @@
 import { useState } from "react"
 import API from "../api/axios"
+import { useRef } from "react"
 
 export default function AdminAndProduct() {
+    const fileRef = useRef()
     const [form, setForm] = useState({
         name: "",
         description: '',
@@ -26,8 +28,25 @@ export default function AdminAndProduct() {
         const data = new FormData();
         Object.keys(form).forEach(key => data.append(key, form[key]))
         data.append("image", image)
-        await API.post('/products', data);
+        console.log("Data", data)
+        await API.post('/products', data, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
         alert("Product Add")
+
+        setForm({
+            name: "",
+            description: '',
+            price: '',
+            category: '',
+            stock: ''
+        })
+        // Reset file state
+        setImage(null)
+        //Reset file value
+        fileRef.current.value = ''
     }
     return (
         <div className=" max-w-2xl m-auto">
@@ -38,7 +57,7 @@ export default function AdminAndProduct() {
                     <input type="number" name="price" placeholder="Price" className="border border-gray-300 p-3 mb-3" value={form.price} onChange={e => handleInputChange(e)} />
                     <input type="text" name="category" placeholder="Category" className="border border-gray-300 p-3 mb-3" value={form.category} onChange={e => handleInputChange(e)} />
                     <input type="text" name="stock" placeholder="Stock" className="border border-gray-300 p-3 mb-3" value={form.stock} onChange={e => handleInputChange(e)} />
-                    <input type="file" name="image" className="border border-gray-300 p-3 mb-3" onChange={e => handleInputChange(e)} />
+                    <input type="file" ref={fileRef} name="image" className="border border-gray-300 p-3 mb-3" onChange={e => setImage(e.target.files[0])} />
                     <button className="bg-green-600 p-3 text-xl text-white cursor-pointer hover:bg-green-800">Add Product</button></div>
             </form>
         </div>

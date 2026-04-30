@@ -17,7 +17,7 @@ export default function Home() {
                     <div key={product._id} className="border border-gray-300 flex justify-center flex-col  items-center">
                         <img src={product.image} width="100" alt="" />
                         <h3>{product.name}</h3>
-                        <p>${product.price}</p>
+                        <p>₹{product.price}</p>
                         <button className="bg-lime-600 p-1.5 cursor-pointer rounded-xl">Add to Cart</button>
                     </div>
                 ))}

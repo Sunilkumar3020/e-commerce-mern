@@ -6,6 +6,7 @@ import generateToken from "../utils/generateToken.js";
 
 export const register = async (req, res) => {
     try {
+        console.log(req.body)
         const { name, email, password } = req.body;
         // validation
         if (!name || !email || !password) {

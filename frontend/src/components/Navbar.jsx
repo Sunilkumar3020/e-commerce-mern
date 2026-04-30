@@ -13,13 +13,16 @@ export default function Navbar() {
     }
     return (
         <nav className="flex justify-between mb-5 bg-gray-200 p-5">
-            <Link to="/" className="text-xl" >Home</Link>
+            <div className="left-nav">
+                <Link to="/" className="text-xl" >Home</Link>
+                 {user?.isAdmin && (
+                    <Link to='/admin/add-product' className="text-xl ms-5 ">Add Product </Link>
+                )}
+            </div>
             <div>
                 {user ? (<>
                     <span>Welcome, {user.name}</span>
-                    {user.isAdmin && (
-                        <Link to='/admin/add-product' className="text-xl">Add Product </Link>
-                    )}
+
                     <button onClick={handleLogout} className="ms-5 bg-red-500 p-3 text-white cursor-pointer"> Logout</button>
                 </>) : (<>
                     <Link to="/login" className="text-xl mr-5" >Login</Link>

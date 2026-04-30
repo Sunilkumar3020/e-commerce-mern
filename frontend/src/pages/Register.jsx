@@ -24,7 +24,8 @@ export default function Register() {
             await register(form)
             navigate("/")
         } catch (error) {
-            alert(error.response?.data?.message) || "Register failed"
+            console.log(error.response)
+            // alert(error.response?.data?.message) || "Register failed"
         }
     }
 

@@ -18,10 +18,7 @@ export const addProduct = async (req, res) => {
         // upload image to cloudinary
         let uploadedImage;
         try {
-            console.log("ENV CHECK:");
-            console.log("CLOUD_NAME:", process.env.CLOUD_NAME);
-            console.log("API_KEY:", process.env.API_KEY);
-            console.log("API_SECRET:", process.env.API_SECRET);
+
             uploadedImage = await cloudinary.uploader.upload(req.file.path, {
                 folder: "products"
             });
@@ -54,95 +51,105 @@ export const addProduct = async (req, res) => {
 
 // Get All products
 
-export const getProducts = async (req, res) => {
-    try {
-        // const queryObj = { ...req.query };
-
-        // const removeFields = ["sort", "page", "limit", "keyword"];
-
-
-        // removeFields.forEach((value) => delete queryObj[value]);
-
-
-        // let queryStr = JSON.stringify(queryObj);
-        // queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
-
-        // let query = Product.find(JSON.parse(queryStr))
-        console.log("IP", req.ip)
-        const queryObj = { ...req.query };
-
-        const removeFields = ["page", "limit", "sort", "fields", "keyword"];
-        removeFields.forEach((el) => delete queryObj[el]);
-
-        let queryStr = JSON.stringify(queryObj);
-
-        queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
-
-        // console.log("queryStr", queryStr)
-
-        let query = Product.find(JSON.parse(queryStr));
-        if (req.query.sort) {
-            query = query.sort(req.query.sort)
-        }
-
-        const products = await query
-
-        // const queryObj = { ...req.query };
-
-        // const formattedQuery = {};
-
-        // for (let key in queryObj) {
-        //     if (key.includes("[")) {
-        //         const field = key.split("[")[0];            // price
-        //         const operator = key.match(/\[(.*?)\]/)[1]; // lte
-
-        //         if (!formattedQuery[field]) {
-        //             formattedQuery[field] = {};
-        //         }
-
-        //         formattedQuery[field][`$${operator}`] = Number(queryObj[key]);
-        //     } else {
-        //         formattedQuery[key] = queryObj[key];
-        //     }
-        // }
-
-        // console.log("FINAL QUERY:", formattedQuery);
-
-        // const products = await Product.find(formattedQuery);
-
-        res.status(200).json(products)
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
 // export const getProducts = async (req, res) => {
 //     try {
-//         let queryObj = { ...req.query };
+
+//         const queryObj = { ...req.query };
 
 //         const removeFields = ["page", "limit", "sort", "fields", "keyword"];
-//         removeFields.forEach(el => delete queryObj[el]);
+//         removeFields.forEach((el) => delete queryObj[el]);
 
 //         let queryStr = JSON.stringify(queryObj);
 
-//         queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, m => `$${m}`);
+//         queryStr = queryStr.replace(/\b(gte|lte|lt|gt)\b/g, m => `$${m}`);
 
-//         let formattedQuery = JSON.parse(queryStr);
 
-//         // convert numbers
-//         if (formattedQuery.price) {
-//             Object.keys(formattedQuery.price).forEach(key => {
-//                 formattedQuery.price[key] = Number(formattedQuery.price[key]);
-//             });
+
+//         let query = Product.find(JSON.parse(queryStr));
+//         if (req.query.sort) {
+//             query = query.sort(req.query.sort)
 //         }
 
-//         const products = await Product.find(formattedQuery);
+//         const products = await query
 
-//         res.status(200).json(products);
+
+
+//         res.status(200).json(products)
 //     } catch (error) {
 //         res.status(500).json({ message: error.message });
 //     }
-//   };    
+// }
+
+export const getProducts = async (req, res) => {
+    try {
+        let queryObj = { ...req.query }
+        const removeFields = ["page", "limit", "sort", "fields", "keywords"]
+        removeFields.forEach(el => delete queryObj[el])
+        let queryStr = JSON.stringify(queryObj)
+        queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, m => `$${m}`)
+
+        query = Product = await Product.find(JSON.parse(queryStr))
+        console.log("Query Object:", queryObj)
+        console.log("Query String:", queryStr)
+        res.status(200).json({ message: "" })
+
+        // search
+        if (req.query.keyword) {
+            query = query.find({
+                name: {
+                    $regex: req.query.keyword,
+                    $options: "i"
+                }
+            })
+        }
+        // Category filter (case insensitive)
+        if (req.query.category) {
+            query = query.find({
+                category: {
+                    $regex: `^${req.query.category}$`,
+                    $options: "i"
+                }
+            })
+        }
+
+        //Sorting
+        if(req.query.sort){
+            //Example: sort = price , -createdAt
+            const sortBy = req.query.sort.split(',').join(" ");
+            query = query.sort(sortBy)
+
+        }else{
+            query = query.sort("-createAt")
+        }
+
+        // Pagination
+
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) ||10
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
+// getProductsByCategory 
+
+export const getProductsByCategory = async (req, res) => {
+    try {
+        const category = req.params.category;
+
+        const products = await Product.find({ category: { $regex: `^${category}$`, $options: "i" } })
+        if (products.length === 0) {
+            return res.status(404).json({
+                message: "No products found in this category"
+            })
+        }
+        res.status(200).json(products)
+
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 
 // Get Single Product
 export const getProductById = async (req, res) => {
