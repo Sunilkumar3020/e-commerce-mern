@@ -24,9 +24,15 @@ export default function Register() {
             await register(form)
             navigate("/")
         } catch (error) {
-            console.log(error.response)
-            // alert(error.response?.data?.message) || "Register failed"
+            // console.log(error.response)
+            alert(error.response?.data?.message) || "Register failed"
         }
+    }
+
+    // handleInputChange
+
+    const handleEmailChange = () => {
+        console.log('Input')
     }
 
     return (
@@ -35,7 +41,7 @@ export default function Register() {
             <form onSubmit={handleFormSubmit}>
                 <div className="flex flex-col ">
                     <input type="text" name="name" className="border border-gray-300 p-3 mb-3" placeholder="Name" value={form.name} onChange={e => handleInputChange(e)} />
-                    <input type="email" name="email" className="border border-gray-300 p-3 mb-3" placeholder="Email" value={form.email} onChange={e => handleInputChange(e)} />
+                    <input type="email" name="email" className="border border-gray-300 p-3 mb-3" placeholder="Email" value={form.email} onChange={e => handleInputChange(e)} onInput={handleEmailChange} />
                     <input type="password" name="password" className="border border-gray-300 p-3 mb-3" placeholder="Password" value={form.password} onChange={e => handleInputChange(e)} />
 
                     <button className="bg-green-600 p-3 text-xl text-white cursor-pointer hover:bg-green-800">Register Now</button></div>

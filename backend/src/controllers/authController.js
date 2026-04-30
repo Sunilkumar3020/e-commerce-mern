@@ -2,11 +2,29 @@ import User from "../models/userModel.js"
 import bcrypt from "bcryptjs"
 import generateToken from "../utils/generateToken.js";
 
+//Email check 
+
+export const emailCheck = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: "Email field are required" })
+        }
+        const emailExits = await User.findOne({ email })
+        if (emailExits) {
+            return res.status(400).json({ message: "Email already exist" })
+        }
+        res.status(200).json({ email })
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+}
+
 // Register user
 
 export const register = async (req, res) => {
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const { name, email, password } = req.body;
         // validation
         if (!name || !email || !password) {
