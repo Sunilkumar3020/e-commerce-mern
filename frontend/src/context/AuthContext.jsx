@@ -6,7 +6,24 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
+    //Register 
+    const register = async (data) => {
+        try {
+            const res = await API.post('/auth/register', data);
+            setUser(res.data)
+        } catch (error) {
+            throw error
+        }
+    }
+    //emailCheck 
 
+    const emailCheck = async (data) => {
+        try {
+            const res = await API.post('/auth/emailCheck', data)
+        } catch (error) {
+            throw error
+        }
+    }
     //login
     const login = async (data) => {
         try {
@@ -17,15 +34,6 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    //Register 
-    const register = async (data) => {
-        try {
-            const res = await API.post('/auth/register', data);
-            setUser(res.data)
-        } catch (error) {
-            throw error
-        }
-    }
 
     // logout
 
