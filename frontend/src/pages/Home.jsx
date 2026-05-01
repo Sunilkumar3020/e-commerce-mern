@@ -5,7 +5,14 @@ export default function Home() {
     const [products, setProducts] = useState([])
 
     useEffect(() => {
-        API.get('/products').then(res => setProducts(res.data))
+        // API.get('/products').then(res => setProducts(res.data))
+        const fetchProduct = async () => {
+            const response = await API.get('/products')
+            const product = response.data.product;
+            setProducts(product)
+            console.log("Response ", response.data.product)
+        }
+        fetchProduct()
     }, [])
 
     return (
@@ -22,7 +29,7 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-           
+
         </div>
 
     )

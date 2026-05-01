@@ -82,16 +82,17 @@ export const addProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
     try {
-        let queryObj = { ...req.query }
-        const removeFields = ["page", "limit", "sort", "fields", "keywords"]
-        removeFields.forEach(el => delete queryObj[el])
-        let queryStr = JSON.stringify(queryObj)
-        queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, m => `$${m}`)
+        // let queryObj = { ...req.query }
+        // const removeFields = ["page", "limit", "sort", "fields", "keywords"]
+        // removeFields.forEach(el => delete queryObj[el])
+        // let queryStr = JSON.stringify(queryObj)
+        // queryStr = queryStr.replace(/\b(gte|lte|gt|lt)\b/g, m => `$${m}`)
+        const products = await Product.find()
+        // let query = Product = await Product.find(JSON.parse(queryStr))
+        // console.log("Query Object:", queryObj)
+        // console.log("Query String:", queryStr)
 
-        query = Product = await Product.find(JSON.parse(queryStr))
-        console.log("Query Object:", queryObj)
-        console.log("Query String:", queryStr)
-        res.status(200).json({ message: "" })
+        res.status(200).json({ success: true, product: products })
 
         // search
         if (req.query.keyword) {
@@ -113,19 +114,22 @@ export const getProducts = async (req, res) => {
         }
 
         //Sorting
-        if(req.query.sort){
+        if (req.query.sort) {
             //Example: sort = price , -createdAt
             const sortBy = req.query.sort.split(',').join(" ");
             query = query.sort(sortBy)
 
-        }else{
+        } else {
             query = query.sort("-createAt")
         }
 
         // Pagination
 
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) ||10
+        const limit = Number(req.query.limit) || 10
+
+
+
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
