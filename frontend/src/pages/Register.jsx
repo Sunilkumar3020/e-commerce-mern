@@ -71,7 +71,9 @@ export default function Register() {
                 <div className="flex flex-col ">
                     <input type="text" name="name" className="border border-gray-300 p-3 mb-3" placeholder="Name" value={form.name} onChange={e => handleInputChange(e)} />
                     <input type="email" name="email" className="border border-gray-300 p-3 mb-3" placeholder="Email" value={form.email} onChange={e => handleInputChange(e)} onInput={(e => setQuery(e.target.value))} />
-                    <span className="text-sm">{emailStatus}</span>
+                    <span className={`text-sm 
+                    ${emailStatus.includes('available')
+                            ? "text-green-600" : "text-red-600"}`}>{emailStatus}</span>
                     <input type="password" name="password" className="border border-gray-300 p-3 mb-3" placeholder="Password" value={form.password} onChange={e => handleInputChange(e)} />
 
                     <button className="bg-green-600 p-3 text-xl text-white cursor-pointer hover:bg-green-800">Register Now</button></div>
