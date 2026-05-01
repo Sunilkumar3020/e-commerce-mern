@@ -17,9 +17,10 @@ export const AuthProvider = ({ children }) => {
     }
     //emailCheck 
 
-    const emailCheck = async (data) => {
+    const emailCheck = async (email) => {
         try {
-            const res = await API.post('/auth/emailCheck', data)
+            const res = await API.post('/auth/emailCheck', { email })
+            return res;
         } catch (error) {
             throw error
         }
@@ -41,14 +42,14 @@ export const AuthProvider = ({ children }) => {
         try {
             await API.post('/auth/logout');
             setUser(null)
-            na
+         
         } catch (error) {
 
         }
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, register }}>
+        <AuthContext.Provider value={{ user, login, logout, register, emailCheck }}>
             {children}
         </AuthContext.Provider>
     )

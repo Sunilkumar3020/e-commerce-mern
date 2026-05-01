@@ -6,17 +6,31 @@ import generateToken from "../utils/generateToken.js";
 
 export const emailCheck = async (req, res) => {
     try {
+        console.log(req.body)
         const { email } = req.body;
+        console.log("Email", email)
         if (!email) {
-            return res.status(400).json({ message: "Email field are required" })
+            return res.status(400).json({
+                success: false,
+                message: "Email is required"
+            })
         }
-        const emailExits = await User.findOne({ email })
-        if (emailExits) {
-            return res.status(400).json({ message: "Email already exist" })
+        const emailExists = await User.findOne({ email })
+        if (emailExists) {
+            return res.status(409).json({
+                success: false,
+                message: "Email already exist"
+            })
         }
-        res.status(200).json({ email })
+        res.status(200).json({
+            success: true,
+            message: "Email available"
+        })
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
     }
 }
 
